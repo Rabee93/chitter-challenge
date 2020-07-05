@@ -9,7 +9,7 @@ class Chitter < Sinatra::Base
     @peep = params[:peep]
     erb(:peeps)
   end
-  
+
 
   run! if app_file == $0
 end
