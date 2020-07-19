@@ -1,5 +1,6 @@
 require 'simplecov'
 require 'simplecov-console'
+require 'pg'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
   SimpleCov::Formatter::Console,
@@ -7,8 +8,13 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
   # SimpleCov::Formatter::HTMLFormatter
 ])
 SimpleCov.start
-
 RSpec.configure do |config|
+  config.before(:each) do
+    connection = PG.connect(dbname: 'chitter_test')
+
+    # Clear the bookmarks table
+    connection.exec("TRUNCATE chitter;")
+  end
   config.after(:suite) do
     puts
     puts "\e[33mHave you considered running rubocop? It will help you improve your code!\e[0m"
@@ -26,5 +32,5 @@ require 'capybara'
 require 'capybara/rspec'
 require 'rspec'
 
-# Tell Capybara to talk to BookmarkManager
-Capybara.app = Chitter
+# Tell Capybara to talk to Chittercontroller
+Capybara.app = Chittercontroller
