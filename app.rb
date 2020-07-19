@@ -10,8 +10,13 @@ class Chittercontroller < Sinatra::Base
   post '/status' do
     @peep = (params[:peep])
     Chitter.add(@peep)
-    erb(:peeps)
+    redirect('/list')
   end
+
+  get '/list' do
+    @list = Chitter.all.reverse
+    erb(:list)
+end
 
 
   run! if app_file == $0
