@@ -9,3 +9,26 @@ feature 'post message' do
     expect(page).to have_content 'good morning'
   end
 end
+feature 'list peeps' do
+  scenario 'it lists all the peeps' do
+
+    connection = PG.connect(dbname: 'chitter_test')
+
+
+    connection.exec("INSERT INTO chitter (peep) VALUES ('hello');")
+    connection.exec("INSERT INTO chitter (peep) VALUES ('goodbye');")
+    connection.exec("INSERT INTO chitter (peep) VALUES ('goodevening');")
+
+    visit('/list')
+
+
+
+
+    expected_order = ['goodevening', 'goodbye', 'hello']
+    actual_order = page.all('li').map(&:text)
+
+    expect(actual_order).to eq(expected_order)
+
+
+  end
+  end

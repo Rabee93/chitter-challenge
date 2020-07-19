@@ -9,4 +9,42 @@ describe Chitter do
     expect(result.ntuples).to eq(1)
   end
 end
+describe('#all')do
+it('lists all peeps') do
+  connection = PG.connect(dbname: 'chitter_test')
+
+
+  connection.exec("INSERT INTO chitter (peep) VALUES ('hello');")
+  connection.exec("INSERT INTO chitter (peep) VALUES ('goodbye');")
+  connection.exec("INSERT INTO chitter (peep) VALUES ('goodevening');")
+
+  chitter = Chitter.all
+
+expect(chitter).to eq(['hello','goodbye','goodevening'])
+
+end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 end
